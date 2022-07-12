@@ -3,18 +3,20 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-fig = plt.figure(figsize=(5,5),dpi=120)
+plt.rcParams['figure.subplot.bottom'] = 0.15
 
 df = pd.read_csv("sampleData1.csv")
 
-
-print(df.isnull().any())#欠損値があるか
+print(df.isnull().any())
 print("-----------------------")
-print(df.isnull().sum())#欠損値の数
+print(df.isnull().sum())
 
-
-plt.scatter(df["X"],df["Y"])
-plt.show()
+fig1, ax1 = plt.subplots(figsize=(5,5),dpi=120)
+ax1.scatter(df["X"],df["Y"])
+ax1.set_xlabel("X")
+ax1.set_ylabel("Y")
+fig1.show()
+fig1.savefig("fig1.png")
 
 #%%
 #階層型クラスタリング
@@ -47,10 +49,11 @@ def plot_dendrogram(model, **kwargs):
 model = AgglomerativeClustering(affinity='euclidean', linkage='ward',distance_threshold=0, n_clusters=None)
 
 model = model.fit(df)
-fig = plt.figure(figsize=(8,8),dpi=150)
+fig2, ax2 = plt.subplots(figsize=(8,8),dpi=150)
 linkage_matrix = plot_dendrogram(model, truncate_mode='level', p=4)
-plt.xlabel("Number of points in node (or index of point if no parenthesis).")
-plt.show()
+ax2.set_xlabel("Number of points in node (or index of point if no parenthesis).")
+fig2.show()
+fig2.savefig("fig2.png")
 
 # %%
 #シルエット係数によるクラスタ数の選択
@@ -67,16 +70,23 @@ for i in range(2,10):
     clusterNumList.append(i)
     scoreList.append(score)
 
-fig = plt.figure(figsize=(8,8))
-plt.plot(clusterNumList,scoreList,marker="o")
+fig3, ax3 = plt.subplots(figsize=(8,8))
+ax3.plot(clusterNumList,scoreList,marker="o")
+ax3.set_xlabel("The number of clusters")
+ax3.set_ylabel("Silhouestte score")
+fig3.savefig("fig3.png")
+
 
 # %%
 #シルエット係数で最も良かったクラスタ数3で色分けして可視化
 
 clusters = fcluster(linkage_matrix, t=3, criterion='maxclust')
 
-fig = plt.figure(figsize=(8,8))
-plt.scatter(df["X"],df["Y"],c=clusters)
+fig4, ax4 = plt.subplots(figsize=(8,8))
+ax4.scatter(df["X"],df["Y"],c=clusters)
+ax4.set_xlabel("X")
+ax4.set_ylabel("Y")
+fig4.savefig("fig4.png")
 
 # %%
 #非階層型クラスタリング:KMeans
@@ -90,11 +100,14 @@ res = model.fit_predict(df)
 
 df["cluster"] = res
 
-fig = plt.figure(figsize=(5,5),dpi=120)
+fig5, ax5 = plt.subplots(figsize=(5,5),dpi=120)
 for i in range(clusterNum):
-    plt.scatter(df[df["cluster"]==i]["X"],df[df["cluster"]==i]["Y"],label="c"+str(i))
-plt.legend()
+    ax5.scatter(df[df["cluster"]==i]["X"],df[df["cluster"]==i]["Y"],label="c"+str(i))
 
+ax5.set_xlabel("X")
+ax5.set_ylabel("Y")
+fig5.legend()
+fig5.savefig("fig5.png")
 # %%
 #非階層型クラスタリング:KMeans
 #シルエット係数によるクラスタ数の選択
@@ -111,8 +124,11 @@ for i in range(2,11):
     clusterNumList.append(i)
     scoreList.append(score)
 
-fig = plt.figure(figsize=(8,8))
-plt.plot(clusterNumList,scoreList,marker="o")
+fig6, ax6 = plt.subplots(figsize=(8,8))
+ax6.plot(clusterNumList,scoreList,marker="o")
+ax6.set_xlabel("The number of clusters")
+ax6.set_ylabel("Silhouestte score")
+fig6.savefig("fig6.png")
 # %%
 #非階層型クラスタリング:KMeans
 #エルボー法によるクラスタ数の選択
@@ -127,7 +143,11 @@ for i in range(2,11):
     clusterNumList.append(i)
     scoreList.append(model.inertia_)   # inertia_ に情報が入っている？
 
-fig = plt.figure(figsize=(8,8))
-plt.plot(clusterNumList,scoreList,marker="o")
+fig7, ax7 = plt.subplots(figsize=(8,8))
+ax7.plot(clusterNumList,scoreList,marker="o")
+ax7.set_xlabel("The number of clusters")
+ax7.set_ylabel("Elbow score")
+fig7.savefig("fig7.png")
+
 
 # %%
