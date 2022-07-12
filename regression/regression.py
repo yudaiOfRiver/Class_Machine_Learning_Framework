@@ -27,14 +27,14 @@ a = model.coef_[0,0]
 b = model.intercept_[0]
 print("Gradient a = %f" % a)
 print("Intercept b = %f" % b)
-fig = plt.figure(figsize=(5,5),dpi=100)
-plt.xlabel('RM')
-plt.ylabel('MEDV')
-plt.scatter(x_train,y_train,label="Train")
-plt.scatter(x_test,y_test,label="Test")
-plt.plot([4,9],[4*a+b,9*a+b],color = "red")
-plt.legend()
-plt.show()
+fig1, ax1 = plt.subplots(figsize=(5,5),dpi=100)
+ax1.set_xlabel('RM')
+ax1.set_ylabel('MEDV')
+ax1.scatter(x_train,y_train,label="Train")
+ax1.scatter(x_test,y_test,label="Test")
+ax1.plot([4,9],[4*a+b,9*a+b],color = "red")
+ax1.legend()
+fig1.savefig("fig1.png")
 
 #学習データに対するMAE (Mean Absolute Error)
 y_pred = model.predict(x_train)
@@ -70,11 +70,11 @@ print("MAE for test data=",mae)
 
 
 #実際の価格と予測した価格をプロット
-fig = plt.figure(figsize=(5,5),dpi=100)
-plt.xlabel("actual value")
-plt.ylabel("expected value")
-plt.scatter(y_test,y_pred)
-plt.plot([0,50],[0,50],color="red",ls="--") #一致した場合にプロットが乗る直線
-plt.show()
+fig2, ax2 = plt.subplots(figsize=(5,5),dpi=100)
+ax2.set_xlabel("actual value")
+ax2.set_ylabel("expected value")
+ax2.scatter(y_test,y_pred)
+ax2.plot([0,50],[0,50],color="red",ls="--") #一致した場合にプロットが乗る直線
+fig2.savefig("fig2.png")
 
 # %%

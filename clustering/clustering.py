@@ -3,8 +3,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-plt.rcParams['figure.subplot.bottom'] = 0.15
-
 df = pd.read_csv("sampleData1.csv")
 
 print(df.isnull().any())
@@ -15,7 +13,6 @@ fig1, ax1 = plt.subplots(figsize=(5,5),dpi=120)
 ax1.scatter(df["X"],df["Y"])
 ax1.set_xlabel("X")
 ax1.set_ylabel("Y")
-fig1.show()
 fig1.savefig("fig1.png")
 
 #%%
